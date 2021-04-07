@@ -2,6 +2,11 @@ package controllers.action;
 
 import java.util.Map;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.Result;
@@ -35,32 +40,51 @@ public class AccountAction extends ActionSupport {
 		this.account = account;
 	}
 
-	@Action(value = "index", results = {
-		@Result(name = SUCCESS, location = "/WEB-INF/views/account/index.jsp")
-	})
+	@Action(value = "index", results = { @Result(name = SUCCESS, location = "/WEB-INF/views/account/index.jsp") })
 	public String index() {
 		this.account = new Account();
 		return SUCCESS;
 	}
 
-	@Action(value = "login", results = {
-		@Result(name = SUCCESS, location = "/WEB-INF/views/account/welcome.jsp"),
-		@Result(name = ERROR, location = "/WEB-INF/views/account/index.jsp")
-	})
+	@Action(value = "login", results = { @Result(name = SUCCESS, location = "/WEB-INF/views/account/welcome.jsp"),
+			@Result(name = ERROR, location = "/WEB-INF/views/account/index.jsp") })
+
 	public String login() {
-		if (this.account.getUsername().equalsIgnoreCase("testing123") && this.account.getPassword().equalsIgnoreCase("testing")) {
-			Map<String, Object> session = ActionContext.getContext().getSession();
-			session.put("username", this.account.getUsername());
-			return SUCCESS;
-		} else {
-			this.errorMessage = "Invalid Account";
-			return ERROR;
+
+		String ret = ERROR;
+		Connection conn = null;
+
+		try {
+			String URL = "jdbc:mysql://localhost/accountdb";
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(URL, "root", "testing123");
+			String sql = "SELECT username FROM users WHERE";
+			sql += " username = ? AND password = ?";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, this.account.getUsername());
+			ps.setString(2, this.account.getPassword());
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				if (this.account.getUsername().equals(rs.getString(1))) {
+					ret = SUCCESS;
+				}
+			}
+		} catch (Exception e) {
+			ret = ERROR;
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (Exception e) {
+				}
+			}
 		}
+		return ret;
 	}
 
-	@Action(value = "logout", results = {
-		@Result(name = SUCCESS, type = "redirectAction", params = { "namespace", "/account", "actionName", "index" })
-	})
+	@Action(value = "logout", results = { @Result(name = SUCCESS, type = "redirectAction", params = { "namespace",
+			"/account", "actionName", "index" }) })
 	public String logout() {
 		Map<String, Object> session = ActionContext.getContext().getSession();
 		session.remove("username");

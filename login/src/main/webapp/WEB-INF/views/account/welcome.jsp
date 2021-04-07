@@ -8,7 +8,7 @@
 </head>
 <body>
 
-	<h3>Welcome</h3>
+	<h3>Successful login</h3>
 	Welcome ${sessionScope.username }
 	<br>
 	<s:a namespace="/account" action="logout">Logout</s:a>
