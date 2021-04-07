@@ -46,8 +46,6 @@ public class AccountAction extends ActionSupport {
 		return SUCCESS;
 	}
 
-	@Action(value = "login", results = { @Result(name = SUCCESS, location = "/WEB-INF/views/account/welcome.jsp"),
-			@Result(name = ERROR, location = "/WEB-INF/views/account/index.jsp") })
 
 	public String login() {
 
@@ -83,8 +81,6 @@ public class AccountAction extends ActionSupport {
 		return ret;
 	}
 
-	@Action(value = "logout", results = { @Result(name = SUCCESS, type = "redirectAction", params = { "namespace",
-			"/account", "actionName", "index" }) })
 	public String logout() {
 		Map<String, Object> session = ActionContext.getContext().getSession();
 		session.remove("username");

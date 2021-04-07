@@ -10,7 +10,7 @@
 
 	<h3>Login</h3>
 	${errorMessage }
-	<s:form method="post" namespace="/account" action="login">
+	<s:form method="post" namespace="/account" action="loginaction">
 		<s:textfield label="Username" name="account.username"></s:textfield>
 		<s:password label="Password" name="account.password"></s:password>
 		<s:submit value="Login" align="left"></s:submit>
