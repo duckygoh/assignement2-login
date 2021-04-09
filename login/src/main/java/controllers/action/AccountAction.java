@@ -21,16 +21,7 @@ public class AccountAction extends ActionSupport {
 
 	private static final long serialVersionUID = 1L;
 
-	private String errorMessage = "";
 	private Account account;
-
-	public String getErrorMessage() {
-		return errorMessage;
-	}
-
-	public void setErrorMessage(String errorMessage) {
-		this.errorMessage = errorMessage;
-	}
 
 	public Account getAccount() {
 		return account;
@@ -46,7 +37,6 @@ public class AccountAction extends ActionSupport {
 		return SUCCESS;
 	}
 
-
 	public String login() {
 
 		String ret = ERROR;
@@ -54,7 +44,7 @@ public class AccountAction extends ActionSupport {
 
 		try {
 			String URL = "jdbc:mysql://localhost/accountdb";
-			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName("com.mysql.cj.jdbc.Driver");
 			conn = DriverManager.getConnection(URL, "root", "testing123");
 			String sql = "SELECT username FROM users WHERE";
 			sql += " username = ? AND password = ?";

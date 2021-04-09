@@ -4,23 +4,21 @@
    "http://struts.apache.org/dtds/struts-2.0.dtd">
 
 <struts>
-   <constant name = "struts.devMode" value = "true" />
-   <package name = "helloworld" extends = "struts-default">
-   
-      <action name = "loginaction" 
-         class = "controllers.action.AccountAction"
-         method = "login">
-         <result name = "error">/index.jsp</result>
-         <result name = "success">/WEB-INF/views/account/welcome.jsp</result>
-      </action>
-      
-      <action name = "logout" 
-         class = "controllers.action.AccountAction"
-         method = "logout">
-         <result name = "success">/WEB-INF/views/account/index.jsp</result>
-      </action>
-   
-   </package>
+	<constant name="struts.devMode" value="true" />
+	<package name="helloworld" extends="struts-default">
+
+		<action name="loginaction"
+			class="controllers.action.AccountAction" method="login">
+			<result name="error">/index.jsp</result>
+			<result name="success">/WEB-INF/views/account/welcome.jsp</result>
+		</action>
+
+		<action name="logout" class="controllers.action.AccountAction"
+			method="logout">
+			<result name="success">/WEB-INF/views/account/index.jsp</result>
+		</action>
+
+	</package>
 </struts>
 
 
